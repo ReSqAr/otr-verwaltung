@@ -119,11 +119,15 @@ class Cut(BaseAction):
     def generate_filename(self, filename, forceavi=0):
         """ generate filename for a cut video file. """
 
-        root, extension = os.path.splitext(os.path.basename(filename))
-        if forceavi == 1:
-            extension = '.avi'
+        if '.mpg.' in os.path.basename(filename):
+            root, extension = os.path.basename(filename).split('.mpg.')
+            extension = '.mpg.' + extension
+        else:
+            root, extension = os.path.splitext(os.path.basename(filename))
+        #if forceavi == 1:
+        #    extension = '.avi'
         new_name = root + "-cut" + extension
-
+        print("MY DEBUG (actions/cut.py):", root, extension, filename)
         cut_video = os.path.join(self.config.get('general', 'folder_cut_avis'), new_name)
 
         return cut_video

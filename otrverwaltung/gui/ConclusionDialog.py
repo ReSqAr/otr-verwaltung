@@ -186,6 +186,7 @@ class ConclusionDialog(gtk.Dialog, gtk.Buildable):
                 else:
                     rename_list = []
                 
+                print "MY DEBUG: Passed mark 2"
                 rename_list.append(self.rename_by_schema(os.path.basename(self.file_conclusion.cut_video)))
                 rename_list.append(os.path.basename(self.file_conclusion.cut_video))
                 print rename_list

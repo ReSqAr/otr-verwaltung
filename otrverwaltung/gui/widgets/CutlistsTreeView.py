@@ -41,15 +41,16 @@ class CutlistsTreeView(gtk.TreeView):
         # create the TreeViewColumns to display the data
         column_names = [
             ("Autor", 'author'),
-            ("Autorwertung", 'ratingbyauthor'),
-            ("Benutzerwertung", self._treeview_rating),
+            ("Autorw.", 'ratingbyauthor'),
+            ("Benutzerw.", self._treeview_rating),
+            ("Loads", "downloadcount"),
             ("Kommentar", 'usercomment'),
             ("Fehler", self._treeview_errors),
+            ("Dauer (s)", "duration"),
+            ("Schnitte", "countcuts"),
             ("Eigentlicher Inhalt", self._treeview_actualcontent),
-            ("Anzahl d. Schnitte", "countcuts"),
             ("Dateiname", "filename"),
-            ("Dauer in s", "duration"),
-            ("Anzahl Heruntergeladen", "downloadcount") ]
+          ]
             
         # add a pixbuf renderer in case of errors in cutlists              
         cell_renderer_pixbuf = gtk.CellRendererPixbuf()
@@ -68,16 +69,22 @@ class CutlistsTreeView(gtk.TreeView):
             else:                
                 col.set_cell_data_func(renderer_left, data_func)
 
-            col.set_resizable(True)        
+            #col.set_resizable(False)
+            #col.set_fixed_width(0)
+            col.set_resizable(True)
+            col.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
             self.append_column(col)
-       
+
+
     def get_selected(self):
         model, selected_row = self.get_selection().get_selected()
         if selected_row:
             return model.get_value(selected_row, 0)
         else:
             return None       
-                      
+
+
+
     def _treeview_standard(self, column, cell, model, iter, attribute_name):
         cutlist = model.get_value(iter, 0)
         cell.set_property('text', getattr(cutlist, attribute_name))
@@ -116,7 +123,9 @@ class CutlistsTreeView(gtk.TreeView):
     def _treeview_error_desc(self, column, cell, model, iter):
         cutlist = model.get_value(iter, 0)
         cell.set_property('markup', "<span foreground='red'>%s</span>" % cutlist.othererrordescription)
-     
+
+
+
     def add_cutlist(self, c):     
         if c.errors in self.errors:
             c.errors = self.errors[c.errors]

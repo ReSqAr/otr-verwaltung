@@ -106,7 +106,7 @@ class ConclusionsManager:
                     conclusion.cut.rename += extension
                 
                 new_filename = os.path.join(self.app.config.get('general', 'folder_cut_avis'), conclusion.cut.rename.replace('/', '_'))
-                new_filename = fileoperations.make_unique_filename(new_filename)
+                #new_filename = fileoperations.make_unique_filename(new_filename)
                     
                 if conclusion.cut_video != new_filename:
                     conclusion.cut_video = fileoperations.rename_file(conclusion.cut_video, new_filename)

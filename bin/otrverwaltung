@@ -442,14 +442,19 @@ class App:
     ### Helpers
     ###
     
-    def rename_by_schema(self, filename, schema=""):
+    def rename_by_schema(self, filename, schema="", cutlist=None):
         """ Gibt den nach dem angegebenen Schema umbenannten Dateinamen zurück. Wird `schema` leer gelassen, so wird das eingestellte Schema verwendet. """
     
         if schema == "":
             schema = self.config.get('general', 'rename_schema')        
         
-        if self.rename_video.match(filename):           
-	    filename, extension = splitext(filename)	# preserve file extension (avi or mkv)
+        if self.rename_video.match(filename) or True:           
+            
+            if '.mpg.' in filename: # preserve file extension (avi or mkv)
+                filename, extension = filename.split('.mpg.')
+                extension = '.mpg.' + extension
+            else:
+                filename, extension = splitext(os.path.basename(filename))
             
             parts = filename.split('_')
             parts.reverse()
@@ -491,9 +496,21 @@ class App:
                 'stunde': stunde,
                 'minute': minute,
                 'dauer' : parts[2],
-                'format' : format
+                'format' : format,
+                'full'  : filename,
+                'ext'   : extension,
             }
-             
+            
+            values["rating"] = ""
+            if cutlist is not None and cutlist.rating != 0:
+                try:
+                    values["rating"] = str(int(100*float(cutlist.rating)))
+                except:
+                    pass
+            
+            # {full}{rating}{ext}
+            print("MY DEBUG:", values)
+            
             for token, value in values.iteritems():
                 schema = schema.replace('{%s}' % token, value)                   
             

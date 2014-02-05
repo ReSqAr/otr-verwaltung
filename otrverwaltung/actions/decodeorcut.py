@@ -343,7 +343,8 @@ class DecodeOrCut(Cut):
                 file_conclusion.ac3_file = ac3_file
 
                 if self.config.get('general', 'rename_cut'):
-                    file_conclusion.cut.rename = self.rename_by_schema(basename(file_conclusion.cut_video)) # rename after cut video, extension could have changed
+                    print "MY DEBUG: passed mark"
+                    file_conclusion.cut.rename = self.rename_by_schema(basename(file_conclusion.cut_video),cutlist=file_conclusion.cut.cutlist) # rename after cut video, extension could have changed
                 else:
                     file_conclusion.cut.rename = basename(cut_video)
                     
