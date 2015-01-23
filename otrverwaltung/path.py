@@ -20,7 +20,7 @@ import filecmp
 from xdg import BaseDirectory
 from shutil import copytree,  rmtree
 
-data_dir = '/home/yasin/Misc/otrcut/otr-verwaltung/data'
+data_dir = '../data'
 
 def getdatapath(*args):
     """Retrieve otrverwaltung data path
